@@ -1,0 +1,18 @@
+{
+  "name": "World Clock Tracker",
+  "description": "A Time extension to track time in different time zones",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "time.html",
+    "default_icon": "time_icon.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L"
+      },
+      "description": "Toggle the extension popup"
+    }
+  }
+}
