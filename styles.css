@@ -14,9 +14,33 @@ body {
 
 /* Main Container */
 .main-container {
-    max-width: 500px;
-    margin: 40px auto;
+    width: 300px;
+    margin: 10px auto 0;
     padding: 20px;
+}
+
+/* Global Offset Control */
+.offset-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    background: #fff;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.offset-label {
+    font-size: 14px;
+    width: 25px;
+    text-align: center;
+}
+
+.offset-slider {
+    width: 250px;
 }
 
 /* Timezone Controls */
@@ -36,47 +60,6 @@ body {
     font-size: 14px;
     outline: none;
     max-width: 250px;
-}
-
-/* Offset Card */
-.offset-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #fff;
-    margin-top: 20px;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.offset-btn {
-    width: 36px;
-    height: 36px;
-    background: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.offset-btn:hover {
-    background: #218838;
-}
-
-.offset-value {
-    font-size: 16px;
-    font-weight: 600;
-    min-width: 20px;
-    text-align: center;
-}
-
-.offset-text {
-    font-size: 14px;
-    color: #555;
 }
 
 /* Timezone Container */
@@ -100,39 +83,57 @@ body {
     transform: scale(1.01);
 }
 
+/* Header Container for Timezone Name and Abbreviation */
+.header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
 /* Timezone Label */
 .label {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
-    margin-bottom: 5px;
     color: #333;
 }
 
-/* Time Input */
-.time-box {
-    font-size: 14px;
-    padding: 6px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
+/* Timezone Abbreviation Display */
+.tz-display {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #555;
 }
 
-/* Red X button */
+/* Time Container for the Time Display */
+.time-container {
+}
+
+/* Time Display */
+.time-display {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Minimalist and Professional Remove Button */
 .remove-button {
     position: absolute;
     top: 8px;
     right: 10px;
-    background: none;
+    background: transparent;
     border: none;
-    color: #e74c3c;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: color 0.2s;
+    color: #888;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
 }
 
 .remove-button:hover {
-    color: #c0392b;
+    background: #e74c3c;
+    color: #fff;
 }

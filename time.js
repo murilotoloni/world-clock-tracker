@@ -1,8 +1,8 @@
 /*****************************
  * 1. Load saved timezones
  *****************************/
-let timezones = JSON.parse(localStorage.getItem('timezones'))
-    || [Intl.DateTimeFormat().resolvedOptions().timeZone];
+let timezones = JSON.parse(localStorage.getItem('timezones')) ||
+    [Intl.DateTimeFormat().resolvedOptions().timeZone];
 
 /*****************************
  * 2. Offset in hours
@@ -19,7 +19,6 @@ const allTimezones = Intl.supportedValuesOf
 /*****************************
  * 4. Populate dropdown
  *****************************/
-// Create a placeholder option
 const selectElement = document.getElementById('timezoneSelect');
 const placeholderOption = document.createElement('option');
 placeholderOption.value = '';
@@ -28,7 +27,6 @@ placeholderOption.disabled = true;
 placeholderOption.selected = true;
 selectElement.appendChild(placeholderOption);
 
-// Fill in the rest
 allTimezones.forEach(tz => {
     const option = document.createElement('option');
     option.value = tz;
@@ -36,7 +34,6 @@ allTimezones.forEach(tz => {
     selectElement.appendChild(option);
 });
 
-// Whenever user picks a timezone, automatically add it
 selectElement.addEventListener('change', () => {
     const selectedTz = selectElement.value;
     if (selectedTz && !timezones.includes(selectedTz)) {
@@ -45,7 +42,6 @@ selectElement.addEventListener('change', () => {
         renderTimezones();
         updateTimes();
     }
-    // Reset dropdown back to placeholder (so user can select again)
     selectElement.value = '';
 });
 
@@ -60,14 +56,29 @@ function renderTimezones() {
         const card = document.createElement('div');
         card.classList.add('timezone');
 
-        const label = document.createElement('div');
+        // Create header container for timezone name and abbreviation
+        const headerContainer = document.createElement('div');
+        headerContainer.classList.add('header-container');
+
+        const label = document.createElement('span');
         label.classList.add('label');
         label.textContent = tz;
 
-        const timeBox = document.createElement('input');
-        timeBox.type = 'text';
-        timeBox.classList.add('time-box');
-        timeBox.readOnly = true;
+        // Timezone abbreviation display element (will be updated later)
+        const tzDisplay = document.createElement('span');
+        tzDisplay.classList.add('tz-display');
+
+        headerContainer.appendChild(label);
+        headerContainer.appendChild(tzDisplay);
+
+        // Time container for the time display
+        const timeContainer = document.createElement('div');
+        timeContainer.classList.add('time-container');
+
+        const timeDisplay = document.createElement('span');
+        timeDisplay.classList.add('time-display');
+
+        timeContainer.appendChild(timeDisplay);
 
         // Remove button
         const removeBtn = document.createElement('button');
@@ -75,10 +86,10 @@ function renderTimezones() {
         removeBtn.textContent = 'X';
         removeBtn.addEventListener('click', () => removeTimezone(tz));
 
-        // Append elements
+        // Append elements to card
         card.appendChild(removeBtn);
-        card.appendChild(label);
-        card.appendChild(timeBox);
+        card.appendChild(headerContainer);
+        card.appendChild(timeContainer);
         container.appendChild(card);
     });
 }
@@ -92,16 +103,30 @@ function updateTimes() {
     const offsetDate = new Date(now.getTime() + offsetMillis);
 
     document.querySelectorAll('.timezone').forEach(zoneCard => {
+        // Retrieve timezone string from label
         const tz = zoneCard.querySelector('.label').textContent;
-        const box = zoneCard.querySelector('.time-box');
+        const timeEl = zoneCard.querySelector('.time-display');
+        const tzEl = zoneCard.querySelector('.tz-display');
 
-        box.value = new Intl.DateTimeFormat('en-US', {
+        // Format time without timezone name:
+        const timeString = new Intl.DateTimeFormat('en-US', {
             timeZone: tz,
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
             hour12: false
         }).format(offsetDate);
+
+        // Extract timezone abbreviation using formatToParts:
+        const parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
+            timeZoneName: 'short'
+        }).formatToParts(offsetDate);
+        const tzNamePart = parts.find(part => part.type === "timeZoneName");
+        const tzAbbreviation = tzNamePart ? tzNamePart.value : '';
+
+        // Update the elements:
+        timeEl.textContent = timeString;
+        tzEl.textContent = tzAbbreviation;
     });
 }
 
@@ -116,17 +141,14 @@ function removeTimezone(tz) {
 }
 
 /*****************************
- * 8. Offset controls
+ * 8. Global Offset Slider control
  *****************************/
-document.getElementById('minusHour').addEventListener('click', () => {
-    offsetHours--;
-    document.getElementById('offsetLabel').textContent = offsetHours;
-    updateTimes();
-});
+const globalSlider = document.getElementById('globalOffsetSlider');
+const globalLabel = document.getElementById('globalOffsetLabel');
 
-document.getElementById('plusHour').addEventListener('click', () => {
-    offsetHours++;
-    document.getElementById('offsetLabel').textContent = offsetHours;
+globalSlider.addEventListener('input', () => {
+    offsetHours = parseFloat(globalSlider.value);
+    globalLabel.textContent = offsetHours + "h";
     updateTimes();
 });
 

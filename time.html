@@ -6,25 +6,20 @@
     <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-
 <div class="main-container">
-
     <div class="timezone-controls">
         <select id="timezoneSelect"></select>
     </div>
 
-
     <!-- Container for Timezone Cards -->
     <div id="timezone-container"></div>
-    <!-- Offset card -->
-    <div id="offset-controls" class="offset-card">
-        <button id="minusHour" class="offset-btn">-</button>
-        <span id="offsetLabel" class="offset-value">0</span>
-        <button id="plusHour" class="offset-btn">+</button>
-        <span class="offset-text">hours offset</span>
+
+    <!-- Global Offset Control -->
+    <div class="offset-control">
+        <input class="offset-slider" type="range" id="globalOffsetSlider" min="-12" max="12" step="1" value="0">
+        <span class="offset-label" id="globalOffsetLabel">0h</span>
     </div>
 </div>
-
 <script src="time.js"></script>
 </body>
 </html>
